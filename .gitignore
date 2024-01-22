@@ -5,12 +5,15 @@
 # Add any additional things to exclude.
 #####################################################################
 
+
+
 .secrets
 
 # Avoid committing any data. If you need to make an exception for one file you can do that separately
 db/
 *.csv
 *.ipynb
+!dev.ipynb
 *.ipynb_checkpoints
 *.xlsx
 *.xls
