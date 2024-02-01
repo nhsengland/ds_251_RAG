@@ -24,6 +24,7 @@ dependencies = [
     "requests>=2.31.0",
     "scrapy>=2.11.0",
     "beautifulsoup4>=4.12.3",
+    "jsonlines>=4.0.0",
 ]
 license = {text = "MIT"}
 
