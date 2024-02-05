@@ -15,6 +15,11 @@ This will principally involve:
 * [ ] **WP4**: Evaluation
 * [ ] **WP5**: Explainer
 
+Progress towards these is tracked here: https://github.com/orgs/nhsengland/projects/29/
+
+The project "milestones" are described here: https://github.com/nhsengland/ds_251_RAG/milestones
+
+
 ## Contact
 **This repository is maintained by NHS England Data Science Team**.
 > _To contact us raise an issue on Github or via [email](mailto:england.rapchampions@nhs.net)._
@@ -23,13 +28,7 @@ This will principally involve:
 
 ## Description
 
-> Provide more detailed overview of the project, including (if relevant) a description of the publication process.
-
-This repository is intended to function as a template for Python RAP projects at NHS England.
-
-You can learn more about project structure and why it's important in the ['project structure and packaging guide'](https://nhsdigital.github.io/rap-community-of-practice/training_resources/python/project-structure-and-packaging/) of the RAP community of practice Github repo, a central source of RAP knowledge.
-
-_You can edit any part of this document. The licence section **must be edited** before publishing this repository publicly. For more information about publishing your project please see the ['how to publish your code in the open' guide](https://nhsdigital.github.io/rap-community-of-practice/implementing_RAP/how-to-publish-your-code-in-the-open/)._
+This project will look at how RAG (Retrieval Augemented Generation) can be used within NHS England, with the primary aim of being able to evaluate how well it performs for an example use case, and to produce resources to advise on how it can be taken forward/enhanced, and to help senior decision makers understand the opportunities and benefits posed by RAG.
 
 ### WP1: Make a simple RAP pipeline
 
@@ -40,7 +39,7 @@ we can test what effect it has.
 The basic structure is described below:
 
  ```mermaid
-    graph LR
+    graph
 
     A[Receive Query] --> L{RAG?}
 
@@ -73,6 +72,7 @@ You can run the RAG pipeline here: [`dev.ipynb`](dev.ipynb)
 
 * Setting out how RAG might be further developed for use in the business, or even just a discussion of more advanced implementations and their benefits (and risks / costs).
 * e.g.
+    * General RAG review: https://arxiv.org/abs/2312.10997v1
     * RAG-fusion: https://github.com/Raudaschl/rag-fusion
     * CRAG: https://www.marktechpost.com/2024/02/03/enhancing-the-accuracy-of-large-language-models-with-corrective-retrieval-augmented-generation-crag/
     * llamaindex: https://www.llamaindex.ai/
@@ -97,12 +97,10 @@ You can run the RAG pipeline here: [`dev.ipynb`](dev.ipynb)
 
 ## Getting Started
 
-> Tell the user how to get started (using a numbered list can be helpful). List one action per step with example code if possible.
-
 1. Clone the repository. To learn about what this means, and how to use Git, see the [Git guide](https://nhsdigital.github.io/rap-community-of-practice/training_resources/git/using-git-collaboratively/).
 
 ```
-git clone <insert URL>
+git clone https://github.com/nhsengland/ds_251_RAG.git
 ```
 
 2. Set up your environment, using [`pdm`](https://github.com/pdm-project/pdm)
@@ -193,10 +191,4 @@ Unless stated otherwise, the codebase is released under the MIT License. This co
 Any HTML or Markdown documentation is [© Crown copyright](https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/) and available under the terms of the [Open Government 3.0 licence](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
 
 ## Acknowledgements
-- [Connor Quinn](https://github.com/connor1q)
 - [Sam Hollings](https://github.com/SamHollings)
-- [Maakhe Ndhlela](https://github.com/maakhe)
-- [Harriet Sands](https://github.com/harrietrs)
-- [Xiyao Zhuang](https://github.com/xiyaozhuang)
-- [Helen Richardson](https://github.com/helrich)
-- [The RAP team](https://github.com/NHSDigital/rap-community-of-practice)!
