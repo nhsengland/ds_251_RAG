@@ -31,13 +31,14 @@ _You can edit any part of this document. The licence section **must be edited** 
 ### WP1: Make a simple RAP pipeline
 
 * We need to make a simple RAP pipeline to use to explore this technique
-* It doesn't need to be that complex - but we do need to be able to turn the "RAG" component on or off - so we can test what effect it has.
+* It doesn't need to be that complex - but we do need to be able to turn the "RAG" component on or off - so 
+we can test what effect it has.
 
 The basic structure is described below:
 
  ```mermaid
-    graph
-    
+    graph LR
+
     A[Hard] -->|Text| B(Round)
     B --> C{Decision}
     C -->|One| D[Result 1]
@@ -78,17 +79,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 ```
-For Visual Studio Code it is necessary that you change your default interpreter to the virtual environment you just created .venv. To do this use the shortcut Ctrl-Shift-P, search for Python: Select interpreter and select .venv from the list.
-### Using conda
-The first line of the `environment.yml` file sets the new environment's name. In this template, the name is `rap_template`- you should change this in the `environment.yml` file, as well as the following code, to the name of your project.
-```
-conda env create -f environment.yml
-conda activate <environment_name>
-```
-3. _Optional_: In the terminal, change the directory into the cloned repos' directory, and run the example publication script:
-```
-cd rap-package-template
-python examples/example_create_publication.py
+For Visual Studio Code it is necessary that you change your default interpreter to the virtual environment you just created .venv. To do this use the shortcut Ctrl-Shift-P, search for Python: Select interpreter and select .venv from the list. examples/example_create_publication.py
 ```
 
 ## Project structure
@@ -163,49 +154,6 @@ This directory contains the meaty parts of the code. By organising the code into
 * `processing` folder contains the core business logic.
 * `utils` folder contains useful reusable functions (e.g. to set up logging, and importing configuration settings from `config.toml`)
 * `write_excel.py` contains functions relating to the final part of the pipeline, any exporting or templating happens here. This is a simplistic application of writing output code to an Excel spreadsheet template (.xlsx). A good example of this application is: [NHS sickness absence rates publication](https://github.com/NHSDigital/absence-rates). We highly recommend to use [Automated Excel Production](https://nhsd-git.digital.nhs.uk/data-services/analytics-service/iuod/automated-excel-publications) for a more in depth Excel template production application.
-
-## Adapting for your project
-
-> Help users configure the repository for their needs. Note that the GitHub/GitLab differentiation is not a usual requirement for a README.
-
-### On GitHub
-
-The [version of this repository on GitHub](https://github.com/NHSDigital/rap-package-template) is out-of-date and will be updated shortly. You are able to create your own GitHub repository from the GitHub version of this template automatically by clicking 'Use this template'.
-
-### On GitLab
-
-Unfortunately the [ability to create a project from template](https://docs.gitlab.com/ee/user/project/working_with_projects.html#create-a-project-from-a-custom-template) is not available on the NHS England GitLab, so the process of using this template is rather manual.
-
-There are several workaround to use this template for your project on GitLab. One method is detailed below:
-
-1. Clone this repository, making sure to replace `<project name>` in the snippet below to the name of your project, **not using any spaces**. To learn about what this means, and how to use Git, see the [Git guide](https://nhsdigital.github.io/rap-community-of-practice/training_resources/git/using-git-collaboratively/).
-
-        git clone https://nhsd-git.digital.nhs.uk/data-services/analytics-service/iuod/rap-repository-template.git <project_name>
-
-2. Change directory into this folder
-
-        cd <project_name>
-
-3. Delete the `.git` file (this removes the existing file revision history)
-
-        rmdir /s .git 
-
-4. Initialise git (this starts tracking file revision history)
-
-        git init
-5. Add the files in the repo to revision history and make the initial commit
-
-        git add .
-        git commit -m "Initial commit"
-6. Create a new blank repository for your project on GitLab
-7. Add the URL of this new repository to your template repo
-
-        git remote set-url origin <insert URL>
-8. Push to GitLab
-
-        git push -u origin main
-
------------
 
 ## Licence
 
