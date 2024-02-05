@@ -42,27 +42,58 @@ The basic structure is described below:
  ```mermaid
     graph LR
 
-    A[Hard] -->|Text| B(Round)
-    B --> C{Decision}
-    C -->|One| D[Result 1]
-    C -->|Two| E[Result 2]
+    A[Receive Query] --> L{RAG?}
+
+    L -- Yes --> B[Pass to database]
+
+    L -- No --> J
+
+    B --> H[(Vectorstore)]
+
+    H --> I[Retrieve documents]
+
+    I --> F[Prompt: Inject Metadata] 
+    F --> G[Prompt: Stuff Documents]
+
+    G --> J[Submit prompt to LLM]
+
+    J --> K[Get response]
+
 ```
+
+The code for the RAG pipeline is found here: [`src/models.py`](./src/models.py)
+
+You can run the RAG pipeline here: [`dev.ipynb`](dev.ipynb)
 
 ### WP2: Make current code reusable 
 
+* We want to meet the silver RAP standard, hence the code needs better documentation, testing and breaking up into reusable chunks.
+
 ### WP3: Methodology exploration
+
+* Setting out how RAG might be further developed for use in the business, or even just a discussion of more advanced implementations and their benefits (and risks / costs).
+* e.g.
+    * RAG-fusion: https://github.com/Raudaschl/rag-fusion
+    * CRAG: https://www.marktechpost.com/2024/02/03/enhancing-the-accuracy-of-large-language-models-with-corrective-retrieval-augmented-generation-crag/
+    * llamaindex: https://www.llamaindex.ai/
+    * langchain: https://www.langchain.com/
+    * Agents
+    * RAGAS: https://docs.ragas.io/en/stable/
 
 ### WP4: Evaluation
 
+* we need to understand how good these tools are at answering questions /summarising documents
+* A relatively simple approach we can start with is, to use the NHS Conditions website (https://www.nhs.uk/conditions/), and see if it can answer questions correctly about that content, and if turning RAG on and off makes any difference.
+    * Fortunately cogstack have made an AI which produces question/answer pairs for NHS conditions- https://github.com/CogStack/opengpt
+* We could then measure the similarity of the "correct" answer with the generated answer using "LLM-as-a-judge" - then compare the scores for RAG and non-RAG
+* There a number of benchmarks, such as [SQuAD](https://rajpurkar.github.io/SQuAD-explorer/), however it is not clear that good performance on these will mean it will perform well on tasks relevant to our business.
+* More discussion about evaluating RAG can be found in these papers: 
+    * Zhou et al. 2023: https://arxiv.org/abs/2311.05112
+
+
 ### WP5: Explainer
 
-* make resources which explan this
-
-## Prerequisites
-
-> If applicable, list the items a user needs to be able to use your repository, such as a certain version of a programming language. It can be useful to link to documentation on how to install these items.
-
-* Python (> 3.0)
+* Senior decision makers will need to make decisions regarding this technology - we need to produce resources which explain it, the benefits and the risks, particularly when compared with fine-tuning (or doing nothing), any of our relevant findings.
 
 ## Getting Started
 
@@ -74,16 +105,11 @@ The basic structure is described below:
 git clone <insert URL>
 ```
 
-2. Set up your environment, _either_ using [pip](https://pypi.org/project/pip/) or [conda](https://www.anaconda.com/). For more information on how to use virtual environments and why they are important,. see the [virtual environments guide](https://nhsdigital.github.io/rap-community-of-practice/training_resources/python/virtual-environments/why-use-virtual-environments/).
+2. Set up your environment, using [`pdm`](https://github.com/pdm-project/pdm)
 
-### Using pip
-```
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-```
-For Visual Studio Code it is necessary that you change your default interpreter to the virtual environment you just created .venv. To do this use the shortcut Ctrl-Shift-P, search for Python: Select interpreter and select .venv from the list. examples/example_create_publication.py
-```
+3. Create your own `.secrets` file with relevant keys (see [`.secrets_example`](.secrets_example)) for the format.
+
+4. Open the [`dev.ipynb`](dev.ipynb) and run it
 
 ## Project structure
 
