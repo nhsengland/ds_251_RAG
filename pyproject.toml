@@ -1,15 +1,35 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "rap-package-template"
-version = "1.0.0"
+name = "ds_251_RAG"
+version = "0.1.0"
 authors = [
-    { name="Data Science Skilled team", email="datascience@nhs.net" }
+    { name="Data Science Skilled team", email="datascience@nhs.net" },
+    {name = "Sam Hollings", email = "52575338+SamHollings@users.noreply.github.com"},
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = "==3.11.*"
+description = "Default template for PDM package"
+dependencies = [
+    "langchain",
+    "jupyter",
+    "pandas",
+    "sqlalchemy",
+    "pytest",
+    "pytest-html",
+    "toml",
+    "python-dotenv",
+    "tdqm",
+    "sentence-transformers",
+    "chromadb",
+    "anthropic",
+    "requests>=2.31.0",
+    "scrapy>=2.11.0",
+    "beautifulsoup4>=4.12.3",
+    "jsonlines>=4.0.0",
+]
+license = {text = "MIT"}
 
 [project.urls]
 "Homepage" = "https://nhsdigital.github.io/rap-community-of-practice/"
+
+[tool.pdm]
+distribution = false

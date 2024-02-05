@@ -1,4 +1,7 @@
-# RAP repository template
+# DS_251_RAG: Exploring the use of RAG in NHS England
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
+ [![licence: MIT](https://img.shields.io/badge/Licence-MIT-yellow.svg)](https://opensource.org/licenses/MIT "MIT License")
+ 
 
 :exclamation: Warning: this repository may contain references internal to NHS England that cannot be accessed publicly
 
