@@ -2,15 +2,15 @@
 
 :exclamation: Warning: this repository may contain references internal to NHS England that cannot be accessed publicly
 
-> Describe your project in 1-3 sentences.
+This project aims to explore the potential uses and efficacy of "Retrieval Augmented Generation" (RAG) within NHS England.
 
-A template Python repository that can be adapted for RAP projects.
+This will principally involve:
 
-_A **repository** is something that contains all of your project's files and and each file's revision history._
-
-## Link to publication
-
-> Include a link to where your publication is published.
+* [x] **WP1**: Making a simple RAG pipeline -> [here](dev.ipynb)
+* [ ] **WP2**: Make reusable current code
+* [ ] **WP3**: Methodology exploration - how to take RAG further
+* [ ] **WP4**: Evaluation
+* [ ] **WP5**: Explainer
 
 ## Contact
 **This repository is maintained by NHS England Data Science Team**.
@@ -27,6 +27,32 @@ This repository is intended to function as a template for Python RAP projects at
 You can learn more about project structure and why it's important in the ['project structure and packaging guide'](https://nhsdigital.github.io/rap-community-of-practice/training_resources/python/project-structure-and-packaging/) of the RAP community of practice Github repo, a central source of RAP knowledge.
 
 _You can edit any part of this document. The licence section **must be edited** before publishing this repository publicly. For more information about publishing your project please see the ['how to publish your code in the open' guide](https://nhsdigital.github.io/rap-community-of-practice/implementing_RAP/how-to-publish-your-code-in-the-open/)._
+
+### WP1: Make a simple RAP pipeline
+
+* We need to make a simple RAP pipeline to use to explore this technique
+* It doesn't need to be that complex - but we do need to be able to turn the "RAG" component on or off - so we can test what effect it has.
+
+The basic structure is described below:
+
+ ```mermaid
+    graph
+    
+    A[Hard] -->|Text| B(Round)
+    B --> C{Decision}
+    C -->|One| D[Result 1]
+    C -->|Two| E[Result 2]
+```
+
+### WP2: Make current code reusable 
+
+### WP3: Methodology exploration
+
+### WP4: Evaluation
+
+### WP5: Explainer
+
+* make resources which explan this
 
 ## Prerequisites
 
