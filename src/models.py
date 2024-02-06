@@ -14,6 +14,8 @@ from langchain.schema import HumanMessage
 
 from tqdm import tqdm
 
+import torch
+
 
 def initialise_anthropic():
     return Anthropic(anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -46,9 +48,15 @@ INJECT_METADATA_PROMPT = PromptTemplate.from_template("{file_path}:\n{page_conte
 
 
 class RagPipeline:
-    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT):
+    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, device=None):
+        
+        if device is None:
+            self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        else:
+            self.device = device
+        
         self.llm = initialise_anthropic()
-        self.embedding = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+        self.embedding = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL, model_kwargs = {'device': self.device})
         self.vectorstore = Chroma(persist_directory=PERSIST_DIRECTORY, embedding_function=self.embedding)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000)
         self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": 10})
