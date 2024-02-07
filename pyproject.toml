@@ -33,3 +33,15 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pytest.ini_options]
+addopts = [
+    "-v",
+    "--doctest-modules",
+    "--doctest-report=cdiff",
+    "--doctest-continue-on-failure"
+]
+doctest_optionflags = "NORMALIZE_WHITESPACE"
+testpaths = [
+    "tests"
+]
