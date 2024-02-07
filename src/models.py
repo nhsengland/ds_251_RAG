@@ -77,6 +77,7 @@ class RagPipeline:
             glob.glob("docs/*.txt", recursive=True), desc="Processing Files", position=0
         ):
             with open(text_file_path, "r", encoding="utf-8") as text_file:
+                print("loading: ", text_file_path)
                 doc = Document(
                     page_content=text_file.read(), metadata={"file_path": text_file_path}
                 )
