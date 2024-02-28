@@ -99,15 +99,28 @@ You can run the RAG pipeline here: [`dev.ipynb`](dev.ipynb)
 
 1. Clone the repository. To learn about what this means, and how to use Git, see the [Git guide](https://nhsdigital.github.io/rap-community-of-practice/training_resources/git/using-git-collaboratively/).
 
-```
-git clone https://github.com/nhsengland/ds_251_RAG.git
-```
+    ```
+    git clone https://github.com/nhsengland/ds_251_RAG.git
+    ```
 
 2. Set up your environment, using [`pdm`](https://github.com/pdm-project/pdm)
+    - Ensure you've got PDM installed
+        - Linux: 
+            ```
+            curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+            ```
+        - Windows (powershell): 
+            ```
+            (Invoke-WebRequest -Uri https://pdm-project.org/install-pdm.py -UseBasicParsing).Content | python -
+            ```
+    - Make sure you've got the right version of python installed (see the [pyroject.toml](./pyproject.toml))
+    - run `pdm sync` (in Windows, you might need to add "python -m " before this)
+    - This will setup the venv and install the correct dependencies.
+
 
 3. Create your own `.secrets` file with relevant keys (see [`.secrets_example`](.secrets_example)) for the format.
 
-4. Open the [`dev.ipynb`](dev.ipynb) and run it
+4. Open the [`rag_demo.ipynb`](dev.ipynb) and run it
 
 ## Project structure
 
