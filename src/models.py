@@ -18,7 +18,7 @@ import torch
 
 
 def initialise_anthropic():
-    return Anthropic(anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"))
+    return Anthropic(anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),temperature = 0)
 
 
 SYSTEM_PROMPT = PromptTemplate.from_template("""You are a helpful assistant that helps people with their questions. You are not a replacement for human judgement, but you can help humans\
@@ -85,10 +85,14 @@ class RagPipeline:
                 self.vectorstore.add_documents(documents=texts)
 
 
-    def answer_question(self, question, rag=True):
+    def answer_question(self, question, rag=True, hyde=False):
 
         if rag:
-            docs = self.retriever.get_relevant_documents(question)
+            if hyde:
+                hypothetical_docs = self.llm(question)
+                docs = self.retriever.get_relevant_documents(hypothetical_docs)
+            else:
+                docs = self.retriever.get_relevant_documents(question)
 
             results = self.stuff_docs_sources_chain({"question": question,
                           "input_documents": docs,
@@ -96,5 +100,6 @@ class RagPipeline:
                         )
             self.results = results
             return results['output_text']
+        
         else:
             return self.llm(question)
