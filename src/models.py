@@ -89,8 +89,8 @@ class RagPipeline:
 
         if rag:
             if hyde:
-                hypothetical_docs = self.llm(question)
-                docs = self.retriever.get_relevant_documents(hypothetical_docs)
+                hypothetical_doc = self.llm(question)
+                docs = self.retriever.get_relevant_documents(hypothetical_doc)
             else:
                 docs = self.retriever.get_relevant_documents(question)
 
