@@ -11,3 +11,5 @@ tdqm
 sentence-transformers
 chromadb
 anthropic
+
+scrape-nhs-conditions
