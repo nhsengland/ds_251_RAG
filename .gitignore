@@ -20,7 +20,7 @@ db/
 docs/
 
 # Exceptions- use ! to include files that would otherwise be ignored
-!publication_template.xlsx
+!scrape_nhs_conditions.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
