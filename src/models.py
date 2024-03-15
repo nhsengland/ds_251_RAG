@@ -10,8 +10,6 @@ from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.schema.document import Document
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
-from langchain.chains import LLMChain
-
 
 from tqdm import tqdm
 
