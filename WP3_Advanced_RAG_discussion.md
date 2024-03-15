@@ -60,6 +60,10 @@ Many techniques improve the retrieval element specifically, and lots of these id
 
 ### Retrieval
 
+Chunk Optimisation:
+
+
+
 There are situations where keyword or numerical filters would be more effective than semantic search. 
 When you use an online shop, you'll often use natural language to describe the item you want, but then use filters to narrow down the search space. 
 Self Querying retrieval uses and LLM to extract keywords from the query that can be used to filter down the database. 
@@ -106,6 +110,7 @@ Other techniques get the LLM to try and answer the question without context, and
 
 ### Augmentation
 Re-Rank
+
 
 ### Generation
 Fine Tuning 
