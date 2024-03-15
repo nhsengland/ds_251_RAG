@@ -85,9 +85,24 @@ F--> G[Retrieved content]
 ```
 
 HyDE
-```mermaid
 
+Semantic search compares a query against the documents in the database.  
+But sometimes the documents being searched through are in a very different form to the queries asked.
+
+Hypothetical Document Embeddings or HyDE attempts to bridge this gap by doing a document to document semantic comparison.  
+An LLM uses the query to produce a hypothetical document in the same form that they are found in the database.  
+This hypothetical document is then used as the starting point for the semantic search.
+
+```mermaid
+graph TD;
+A[query]-->B[LLM generator]
+B-->C[Hypothetical document]
+C--Semantic Search-->E[(Database)]
+E-->G[Retrieved content]
 ```
+This technique requires an LLM to produce a potential document, from which the answer to the question could be drawn, and then use that as a semantic tool.
+Other techniques get the LLM to try and answer the question without context, and then use that answer to improve the generation or retrieval. 
+
 
 ### Augmentation
 Re-Rank
