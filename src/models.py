@@ -11,14 +11,13 @@ from langchain.schema.document import Document
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
 
-
 from tqdm import tqdm
 
 import torch
 
 
 def initialise_anthropic():
-    return Anthropic(anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"))
+    return Anthropic(anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),temperature = 0)
 
 
 SYSTEM_PROMPT = PromptTemplate.from_template("""You are a helpful assistant that helps people with their questions. You are not a replacement for human judgement, but you can help humans\
@@ -46,9 +45,16 @@ FINAL ANSWER:"""
 
 INJECT_METADATA_PROMPT = PromptTemplate.from_template("{file_path}:\n{page_content}")
 
+HYDE_PROMPT = """Generate a hypothetical NHS conditions page based on the following question.\
+Focus on providing a comprehensive overview, including key details about the condition's symptoms, underlying causes,\
+and recommended treatment modalities. Keep in mind the target audience of general readers seeking reliable health information.\
+The conditions page should be under 1000 characters.
+    
+QUESTION: """
+
 
 class RagPipeline:
-    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, device=None):
+    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None):
         
         if device is None:
             self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -60,6 +66,7 @@ class RagPipeline:
         self.vectorstore = Chroma(persist_directory=PERSIST_DIRECTORY, embedding_function=self.embedding)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000)
         self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": 10})
+        self.hyde_prompt = hyde_prompt
 
         self.stuff_docs_sources_chain = load_qa_with_sources_chain(
             self.llm,
@@ -84,11 +91,18 @@ class RagPipeline:
                 texts = self.text_splitter.split_documents([doc])
                 self.vectorstore.add_documents(documents=texts)
 
+    
 
-    def answer_question(self, question, rag=True):
+
+    def answer_question(self, question, rag=True, hyde=False):
 
         if rag:
-            docs = self.retriever.get_relevant_documents(question)
+
+            if hyde:
+                hypothetical_doc = self.llm(self.hyde_prompt + question)
+                docs = self.retriever.get_relevant_documents(hypothetical_doc)
+            else:
+                docs = self.retriever.get_relevant_documents(question)
 
             results = self.stuff_docs_sources_chain({"question": question,
                           "input_documents": docs,
@@ -96,5 +110,6 @@ class RagPipeline:
                         )
             self.results = results
             return results['output_text']
+        
         else:
             return self.llm(question)
