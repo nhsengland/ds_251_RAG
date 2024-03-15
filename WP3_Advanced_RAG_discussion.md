@@ -1,8 +1,5 @@
 # Advanced RAG Discussion
 
-```
-This markdown file will contain Ben's literature review on how you can take RAG further
-```
 
 Feel free to change the titles:
 
