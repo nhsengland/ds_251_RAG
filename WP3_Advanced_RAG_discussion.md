@@ -1,8 +1,6 @@
 # Advanced RAG Discussion
 
 
-Feel free to change the titles:
-
 ## Introduction
 
 Large language models have two main sources of information. 
