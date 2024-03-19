@@ -29,7 +29,11 @@ In the last year Large Language Models have exploded in popularity - these are *
 >Summary:
 > - This is still "hard" to do, and there is not "best way" currently agreed
 > - Industry standard is for humans to judge the quality of the output - however this is laborious and time consuming
-> - LLM-as-a-judge - having an AI judge how good the outputs are based on principals (accurate, concise, relevant, )
+> - LLM-as-a-judge - having an AI judge how good the outputs are based on evaluation criteria. 
+>    - This can be based criteria which do not need a "correct answer", e.g.constitutional principals (harmfulness, ethical, illegal, etc.), correct grammar, relevance (to the question), conciseness...
+>    - There are also criteria which need a reference answer (accuracy)
+> - You can also judge if the the RAG pipeline retrieved the correct sources
+> - Benchmarks scores and Natural Language Processing (NLP) metrics can be useful for comparing models but don't guarantee performance on a business task
 
 ## The stuff they don't tell you - complications and downsides of RAG
 >Summary:
@@ -41,8 +45,12 @@ In the last year Large Language Models have exploded in popularity - these are *
 
 ## Ways of enhancing RAG further
 >Summary:
->
+> - RAG can be enhanced to improve the retrieval of documents, augmentation of prompts and generation of responses.
+> - Enhancements to RAG often either make it faster and cheaper to run, or aim to improve evaluation performance (making it more expensive / slower to run).
+> - Hence there is a trade-off - the business problem should lead what type of RAG pipeline is built 
 
 ## Beyond RAG
 >Summary:
->
+> - RAG is increasingly viewed as part of the wider ecosystem of tools that AI "Agents" can use to enhance their outputs
+> - For example, When you submit a question, the AI should be able to choose whether it queries a database, retrieves semantically similar documents or whether it simply does a web search.
+> - It's important AI systems are built which can use the right tool for the job (which may not always be RAG).
