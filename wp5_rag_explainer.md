@@ -7,9 +7,32 @@
 > - They have exploded popularity in the last year.  Famous examples are ChatGTP and Copilot
 > - They work by looking at the submitted "prompt" and predicting the next character in the sequence - character by character until they decide to stop.
 > - This works using a complex architecture of neural networks, trained on large amounts of text data. 
+> - You can use "closed-source" LLMs hosted by large organisations - this is easy, and reasonably cheap, but you have less control and isn't suitable for sensitive applications
+> - You can host your own open-source models - this requires more infrastructure and overall cost - however you have complete control and can further train the model, run it your our own hardware etc.
 
 
 In the last year Large Language Models have exploded in popularity - these are **Artificial Intelligence tools**, which can seemingly answer any question you submit to them - and even better, **you can converse with them using normal everyday language**. 
+
+LLMs are trained on large bodies of data, learning the relationships between words and those that come before and after them - the end result is a model which when you submit a text string to it, it will predict the "tokens" (basically characters) that come next, one at a time, until the end result is whole sentences and paragraphs. It's important to remember that usually, under-the-hood, all it is doing is predicting what character comes next.
+
+### Closed-source vs Open-source models
+
+The state of the art models are huge, and require vast amounts of compute, manpower (and hence time and money) to train, with the latest models having 100s of billions (or even trillions) of parameters, having consumed potentially millions of documents with costs in the regions of 100's millions of dollars. These models are also often closed source, meaning that the company has not revealed exactly how the model was trained, or released the files for the model itself.
+
+However, it's possible to get decent performance with far less: many "open source" models, such as those from Mistral performs well with 70B (70 Billion) parameters and took *only* $500,000 to train. The cost to train models with acceptable levels of performance will only decrease as techniques improve and become more efficient.
+
+70B parameters is still very large, requiring special hardware to run - however, improvements in techniques are leading to even smaller models ~7B which can run on *normal* laptops, though the quality of the outputs of these models will probably be worse than the larger models. However, a huge benefit of open source is that you can adapt the model to your needs e.g. you can do further training (fine-tuning).
+
+It's important to to note that the closed-source models often run on servers held elsewhere - you submit your question to them, and it returns the answers. This means that's not suitable for many more sensitive use-cases (at least without a close partnership with the organisation running the model). Open source models by their nature can be run on hardware we own, and so can be used for any use-case.
+
+### Cost to run
+
+State of the art (closed-source models) cost something in the region of ~$10 per million "tokens" (similar to words) - so ~ 240,000 words/£.
+
+On the other hand, paying to run a 70B open source model would need ~4 A100 GPUs, costing ~ $4 per hour, outputting ~380 tokens per second, meaning the overall cost is approximately 114,00 words/£ ([see this blog](https://hamel.dev/notes/llm/inference/big_inference.html)).
+
+In this we can see that the models hosted by large companies are quite competitive in price, however you give up on control.
+
 
 ## Retrieval Augmented Generation (RAG): making LLMs be more truthful
 >Summary:
@@ -17,7 +40,7 @@ In the last year Large Language Models have exploded in popularity - these are *
 > - "Fine Tuning" the LLM on more data in this area is expensive
 > - Submitting relevant documents for context to the LLM alongside your question can improve performance without needing to fine-tune
 > - **RAG** automates this process:
->    - **Retrieval**: Your question is put through a model which then brings back "relevant" documents
+>    - **Retrieval**: Your question is put through a model which then brings back "relevant" documents from a database
 >    - **Augmented**: Your question is augmented by adding the relevant segments of those documents as context to make a prompt
 >    - **Generation**: The augmented "prompt" is submitted to the LLM which generates an improved response
 > - RAG makes adding to your LLMs knowledge base easy - you just load more documents into the database (for fine-tuning this is expensive)
