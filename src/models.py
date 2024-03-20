@@ -1,19 +1,43 @@
 import glob
 import os
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.llms import Anthropic
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 #from langchain.chat_models import ChatAnthropic
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.schema.document import Document
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
-
 from tqdm import tqdm
-
 import torch
+
+
+def initialise_phi2():
+    """initialise phi2 model from HuggingFace and output as a langchain model object
+    """
+    from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, BitsAndBytesConfig
+    from transformers.utils import logging
+
+    #quantize the model to make it smaller and easier to run
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+
+    #load in phi-2 model - a small model with 2B parameters
+    model_id = "microsoft/phi-2"
+    #set max tokens to 1000 as small models such as phi-2 will produce verbose outputs
+    max_new_tokens = 1000
+
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(model_id,quantization_config=quantization_config)#, device_map='auto')
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=1000)
+
+    #set logging information to info to avoid warnings
+    logging.set_verbosity_error()
+
+    hf = HuggingFacePipeline(pipeline=pipe)
+
+    return hf
 
 
 def initialise_anthropic():
@@ -35,6 +59,7 @@ Example 2: "Open source code is a good idea because:
 * it's easy for people to access and use (open_source_guidlines.txt)
 * it's easy to share (goldacre_review.txt)
 
+
 SOURCES: (goldacre_review.txt, open_source_guidlines.txt)"
 
 QUESTION: {question}
@@ -45,6 +70,11 @@ FINAL ANSWER:"""
 
 INJECT_METADATA_PROMPT = PromptTemplate.from_template("{file_path}:\n{page_content}")
 
+PHI2_PROMPT = PromptTemplate.from_template("""Instruction: With this context\n\n{docs}\n\ncreate a final answer with references ("SOURCES"). \
+If you don't know the answer, just say that you don't know. Don't try to make up an answer. \
+ALWAYS return a "SOURCES" part in your answer.\n\nQuestion: {question}\nOutput:""")
+
+
 HYDE_PROMPT = """Generate a hypothetical NHS conditions page based on the following question.\
 Focus on providing a comprehensive overview, including key details about the condition's symptoms, underlying causes,\
 and recommended treatment modalities. Keep in mind the target audience of general readers seeking reliable health information.\
@@ -54,18 +84,24 @@ QUESTION: """
 
 
 class RagPipeline:
-    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None):
+    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None, model_type="anthropic"):
         
         if device is None:
             self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         else:
             self.device = device
         
-        self.llm = initialise_anthropic()
+        #if user wants to run phi2 model insert this as the prompt for the stuff documents chain if not default to anthropic prompt
+        if model_type == 'phi2':
+            self.llm = initialise_phi2()
+            stuff_documents_prompt = PHI2_PROMPT
+        else:
+            self.llm = initialise_anthropic()
+
         self.embedding = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL, model_kwargs = {'device': self.device})
         self.vectorstore = Chroma(persist_directory=PERSIST_DIRECTORY, embedding_function=self.embedding)
-        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000)
-        self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": 10})
+        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=500)
+        self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": 1})
         self.hyde_prompt = hyde_prompt
 
         self.stuff_docs_sources_chain = load_qa_with_sources_chain(
@@ -75,9 +111,8 @@ class RagPipeline:
             document_prompt=inject_metadata_prompt,
             document_variable_name="docs",
             document_separator="\n\n",
-            verbose=True,
-        )
-
+            verbose=True)
+    
 
     def load_documents(self):
         for text_file_path in tqdm(
@@ -94,7 +129,7 @@ class RagPipeline:
     
 
 
-    def answer_question(self, question, rag=True, hyde=False):
+    def answer_question(self, question, rag=True, hyde=False, model_type='anthropic'):
 
         if rag:
 
@@ -112,4 +147,7 @@ class RagPipeline:
             return results['output_text']
         
         else:
-            return self.llm(question)
+            if model_type == 'phi2':
+                return self.llm('Instruct: {} \n\n Output:'.format(question))
+            else:
+                return self.llm(question)
