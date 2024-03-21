@@ -131,4 +131,8 @@ Both techniques can be used together, with a vectorised database being the main,
 
 ## Modular RAG
 
+```mermaid
+
+```
+
 ## Agents
