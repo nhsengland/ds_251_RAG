@@ -71,8 +71,8 @@ FINAL ANSWER:"""
 INJECT_METADATA_PROMPT = PromptTemplate.from_template("{file_path}:\n{page_content}")
 
 PHI2_PROMPT = PromptTemplate.from_template("""Instruction: With this context\n\n{docs}\n\ncreate a final answer with references ("SOURCES"). \
-If you don't know the answer, just say that you don't know. Don't try to make up an answer. \
-ALWAYS return a "SOURCES" part in your answer.\n\nQuestion: {question}\nOutput:""")
+If you don't know the answer, just say that you don't know. Don't try to make up an answer. Always return the file name from the context used to answer 
+the question\n\nQuestion: {question}\nOutput:""")
 
 
 HYDE_PROMPT = """Generate a hypothetical NHS conditions page based on the following question.\
