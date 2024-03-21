@@ -107,13 +107,27 @@ E-->G[Retrieved content]
 This technique requires an LLM to produce a potential document, from which the answer to the question could be drawn, and then use that as a semantic tool.
 Other techniques get the LLM to try and answer the question without context, and then use that answer to improve the generation or retrieval. 
 
+Retrieval can also be improved through fine tuning of the embedder models. 
+A specialised embedder, fine tuned on the kind of documents or questions expected in the task, can produce a much more precise vector space and improve retrieval results. 
+
 
 ### Augmentation
+Once the materials have been retrieved, the original query can be augmented with extra context. 
+LLMs perform quite differently depending on how the prompt is worded. Increasingly the task of prompt engineering is being automated and tackled by LLMs themselves. 
+
 Re-Rank
+We know that LLMs are better at retrieving facts from context. More specifically, they have been found to be better at retrieving facts from the start and end of context. 
+One of the simpler re-rank ideas is to place the most relevant retrieved materials at the start and end of the augmented prompt. 
 
 
 ### Generation
-Fine Tuning 
+
+Getting the generation right is the ultimate goal of the RAG pipeline, and all other parts can be evaluated by the performance of the generated content. 
+Once the query has been augmented, an LLM will attempt to generate an answer. This is another area where fine tuning can be utilised. 
+
+Often RAG is pitted against fine tuning, but this is with respect to the models ability to retrieve facts, rather than the abilty to generate good answers. 
+Both techniques can be used together, with a vectorised database being the main, updatable knowledge store, and the generator being fine tuned for the task. The fine tuning is then not so much that the model will be tuned on the right knowledge, but that it will be familiar with the right form of language expected in the output. 
+
 
 ## Modular RAG
 
