@@ -129,10 +129,34 @@ Often RAG is pitted against fine tuning, but this is with respect to the models 
 Both techniques can be used together, with a vectorised database being the main, updatable knowledge store, and the generator being fine tuned for the task. The fine tuning is then not so much that the model will be tuned on the right knowledge, but that it will be familiar with the right form of language expected in the output. 
 
 
-## Modular RAG
+### Modular RAG
+The modular RAG paradigm is slowly becoming the norm in the RAG domain due to its versatility and flexibility, allowing: 
+- the adaption of modules within the RAG process to suit your specific problem, 
+- for a serialized pipeline or an end-to-end training approach across multiple modules.
 
-```mermaid
+## The Future
+Looking forward there are a few ways that RAG could go. 
+With that comes options for where our focus is as a project looking into RAG, we have a particular interest in models being open and runnable on small compute. 
 
-```
+### Contextual Language Models
+Recently the original writers of the RAG paper released an approach they are calling RAG 2.0, or Contextual Language Models.
+The basic idea being a move away from off the shelf embedders and frozen LLMS to a fully tuneable, fully contextualised pipeline. 
+https://contextual.ai/introducing-rag2/
 
-## Agents
+### Agents
+Some of the language around modular RAG and self tuning systems starts to sound like Agents. RAG's specialism is in grounding generated answers in the truth, and the incorporation of the vectorised data store, but these concepts are absorbed into Agent based LLMs without issue. 
+
+### Massive context windows 
+LLMs are improving, and one of the measures that is increasing rapidly is the size of the context window. 
+RAG concepts can still play a part in this in two ways, 
+1. No matter the size of the context window, retrieval is still important for efficiency and quality of output. 
+2. How the huge context window is used is an augmentation task. 
+
+### Making the best Open model
+Open source models are improving but still lag behind the best corporate LLMs. 
+There would be significant utility behind an Open model + RAG solution which could be production ready. 
+
+### Evaluation
+No matter which direction LLMs or RAG pipelines go, getting evaluation right remains crucial. 
+But we should be careful not to assume that one evaluation metric always transfers to other usecases. 
+
