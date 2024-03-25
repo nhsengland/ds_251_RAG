@@ -84,7 +84,7 @@ QUESTION: """
 
 
 class RagPipeline:
-    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None, model_type="anthropic", max_tokens=500):
+    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None, model_type="anthropic", max_tokens=2000):
         
         if device is None:
             self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
