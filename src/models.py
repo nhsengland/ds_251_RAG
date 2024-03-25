@@ -14,7 +14,7 @@ from tqdm import tqdm
 import torch
 
 
-def initialise_phi2():
+def initialise_phi2(max_tokens):
     """initialise phi2 model from HuggingFace and output as a langchain model object
     """
     from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, BitsAndBytesConfig
@@ -25,12 +25,12 @@ def initialise_phi2():
 
     #load in phi-2 model - a small model with 2B parameters
     model_id = "microsoft/phi-2"
-    #set max tokens to 1000 as small models such as phi-2 will produce verbose outputs
-    max_new_tokens = 1000
-
+    
+    #create hugging face pipeline for phi2 model using the max_tokens parameter
+    #max_tokens initalised to 500 characters to produce concise relevant respons
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(model_id,quantization_config=quantization_config)#, device_map='auto')
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=1000)
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=max_tokens)
 
     #set logging information to info to avoid warnings
     logging.set_verbosity_error()
@@ -84,7 +84,7 @@ QUESTION: """
 
 
 class RagPipeline:
-    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None, model_type="anthropic"):
+    def __init__(self, EMBEDDING_MODEL, PERSIST_DIRECTORY, stuff_documents_prompt=STUFF_DOCUMENTS_PROMPT, inject_metadata_prompt=INJECT_METADATA_PROMPT, hyde_prompt = HYDE_PROMPT, device=None, model_type="anthropic", max_tokens=2000):
         
         if device is None:
             self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -93,7 +93,7 @@ class RagPipeline:
         
         #if user wants to run phi2 model insert this as the prompt for the stuff documents chain if not default to anthropic prompt
         if model_type == 'phi2':
-            self.llm = initialise_phi2()
+            self.llm = initialise_phi2(max_tokens=max_tokens)
             stuff_documents_prompt = PHI2_PROMPT
         else:
             self.llm = initialise_anthropic()
